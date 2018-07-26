@@ -39,6 +39,38 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
+        // 客户端处理表单 (ajax局部刷新)
+        // 1. 监听form提交事件
+        // 2. 取消默认提交事件
+        // 3. 获取表单数据
+        // 4. 发送ajax
+
+        $('#signin_form').submit(function(e) {
+            e.preventDefault();
+            var formdata = $(this).serialize();
+            // console.log(formdata);
+            $.post('/handleSignin', formdata, function(data) {
+                // console.log(data);
+                switch (data.code) {
+                    case 1:
+                        alert(data.message);
+                        break;
+                    case 2:
+                        alert(data.message);
+
+                        break;
+                    case 500:
+                        alert(data.message);
+                        break;
+                    case 200:
+                        // 跳转到话题列表页
+                        window.location.href = '/';
+                        break;
+                    default:
+                        break;
+                }
+            });
+        });
     </script>
 </body>
 
