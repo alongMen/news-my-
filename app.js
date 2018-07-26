@@ -3,11 +3,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const router = require('./router');
+var session = require('express-session');
 
 // 2. 实例化app
 const app = express();
 
 // 配置包
+// 配置express-session包
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
 // 模板引擎
 app.engine('html', require('express-art-template'));
 // 统一处理静态资源

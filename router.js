@@ -6,7 +6,7 @@
 // 4. 导出路由模块
 
 const express = require('express');
-const user = require('./controllers/user');
+const user = require('./controllers/c_user');
 
 
 const router = express.Router();
