@@ -3,12 +3,12 @@
 const M_user = require('../models/m_user');
 
 // 渲染用户登录页的方法
-exports.showSignin = (req, res) => {
+exports.showSignin = (req, res,next) => {
     res.render('signin.html');
 };
 
 // 处理登录的表单请求
-exports.handleSignin = (req, res) => {
+exports.handleSignin = (req, res,next) => {
     // 1 获取表单数据(post)
     const body = req.body;
     // console.log(body);
@@ -17,10 +17,7 @@ exports.handleSignin = (req, res) => {
     // 让模型去检查邮箱，把数据库操作结果返回
     M_user.checkEmail(body.email,(err,results) => {
         if (err) {
-            return res.send({
-                code: 500,
-                message: err.message
-            });
+            return next(err);
         }
 
         // console.log(results);
@@ -56,27 +53,24 @@ exports.handleSignin = (req, res) => {
     })
 };
 
-exports.handleSignout = (req,res) => {
+exports.handleSignout = (req,res,next) => {
     delete req.session.user;
     res.redirect('/signin');//用户退出
 }
 
 //处理渲染注册页面
-exports.showSignup = (req,res) => {
+exports.showSignup = (req,res,next) => {
 
     res.render('signup.html');
 }
 
 //处理注册表单
-exports.handleSignup = (req,res) => {
+exports.handleSignup = (req,res,next) => {
     //获取表单数据
     const body = req.body;
     M_user.checkEmail(body.email,(err,results) => {
         if (err) {
-            return res.send({
-                code: 500,
-                message: err.message
-            });
+            return next(err);
         }
 
         // 如果result为[] 证明邮箱不存在

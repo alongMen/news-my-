@@ -4,14 +4,11 @@ const M_topic = require('../models/m_topic');
 //导入包moment
 const moment = require('moment');
 
-exports.showIndex = (req,res) => {
+exports.showIndex = (req,res,next) => {
 
 	M_topic.findAllTopics((err,results) => {
 		if(err){
-			return res.send({
-				code:500,
-				message:err.message
-			})
+			return next(err);
 		}
 
 		res.render('index.html',{
@@ -22,14 +19,14 @@ exports.showIndex = (req,res) => {
 }
 
 //渲染发布新话题
-exports.showCreateTopic = (req,res) => {
+exports.showCreateTopic = (req,res,next) => {
 
 
 	// 渲染发布新话题topic/create.html
 	res.render('topic/create.html');
 }
 
-exports.handleCreateTopic = (req,res) => {
+exports.handleCreateTopic = (req,res,next) => {
 	//最终目的向数据库中新增话题，然后跳转回列表页
 	//获取表单数据
 	const body = req.body;
@@ -41,10 +38,7 @@ exports.handleCreateTopic = (req,res) => {
 	//模型操作数据库新增话题
 	M_topic.insertTopic(body,(err, results) => {
 		if(err) {
-			return res.send({
-				code:500,
-				message:err.message
-			})
+			return next(err);
 		}
 		res.send({
 			code:200,
@@ -54,16 +48,13 @@ exports.handleCreateTopic = (req,res) => {
 	//客户端实现跳转，不用服务端重定向（只适用于同步请求），这里是因为异步请求
 }
 
-exports.showDetail = (req, res) => {
+exports.showDetail = (req, res,next) => {
 	//获取请求对象中放入动态参数router中的topicId
 	//获取当前点击话题的ID
 	const topicId = req.params.topicId;
 	M_topic.findTopicById(topicId,(err, results) => {
 		if(err) {
-			return res.send({
-				code:500,
-				message:err.message
-			})
+			return next(err);
 		}
 		res.render('topic/show.html',{
 			sessionId:req.session.user.id,
@@ -72,15 +63,12 @@ exports.showDetail = (req, res) => {
 	})
 }
 
-exports.deleteTopic = (req,res) => {
+exports.deleteTopic = (req,res,next) => {
 	//让模型根据topID删除话题
 	const topicId = req.params.topicId;
 	M_topic.deleteTopic(topicId,(err, results) => {
 		if(err) {
-			return res.send({
-				code:500,
-				message:err.message
-			})
+			return next(err);
 		}
 		res.send({
 			code:200,
@@ -91,7 +79,7 @@ exports.deleteTopic = (req,res) => {
 }
 
 // 渲染编辑页面
-exports.showEdit = (req, res) => {
+exports.showEdit = (req, res,next) => {
 
 
     // 1. 获取topicId
@@ -112,15 +100,12 @@ exports.showEdit = (req, res) => {
     });
 }
 //处理编辑表单请求
-exports.handleEdit = (req,res) => {
+exports.handleEdit = (req,res,next) => {
 	const topicId = req.params.topicId;
 	const body = req.body;
 	M_topic.updateTopicById(topicId,body,(err, results) => {
 		if(err) {
-			return res.send({
-				code:500,
-				message:err.message
-			})
+			return next(err);
 		}
 		res.send({
 			code:200,
