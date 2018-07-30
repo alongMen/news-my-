@@ -38,6 +38,19 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
+        $('#signup_form').submit(function(e){
+            e.preventDefault();
+            var formdata = $(this).serialize();
+
+            $.post('/signup',formdata,function(data){
+                //根据服务端响应code进行跳转处理
+                if(data.code == 200) {
+                    window.location.href = '/signin';
+                }else {
+                    alert(data.message);
+                }
+            })
+        })
     </script>
 </body>
 

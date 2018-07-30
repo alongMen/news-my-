@@ -13,4 +13,25 @@ function checkEmail(email,callback){
     });
 }
 
+exports.checkNickname = (nickname,callback) => {
+	const sqlstr = 'SELECT *FROM `users` WHERE `nickname`=?';
+    connection.query(sqlstr,nickname, (err, results) => {
+    	if(err){
+    		return callback(err);//异步用回调函数处理
+    	}
+    	callback(null,results);
+    });
+}
+
+// 添加新数据
+exports.insertUser = (body,callback) => {
+	const sqlstr = 'INSERT INTO `users` SET ?';
+    connection.query(sqlstr,body, (err, results) => {
+    	if(err){
+    		return callback(err);//异步用回调函数处理
+    	}
+    	callback(null,results);
+    });
+}
+
 exports.checkEmail = checkEmail;

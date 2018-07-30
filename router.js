@@ -31,7 +31,11 @@ router.get('/signin', user.showSignin)
     // 渲染编辑页面
     .get('/topic/:topicId/edit', topic.showEdit)
     //处理表单请求
-    .post('/topic/:topicId/edit',topic.handleEdit);
+    .post('/topic/:topicId/edit',topic.handleEdit)
+    //渲染注册页
+    .get('/signup',user.showSignup)
+    //处理注册表单
+    .post('/signup',user.handleSignup);
 
 
 
