@@ -44,6 +44,8 @@ exports.handleSignin = (req, res) => {
         }
 
         // 如果密码正确,将邮箱昵称保存到session中,将来在话题页使用
+        // session不是持久存储，重启服务器需要重新登录,
+        // 这就需要把数据保存在数据库中，使用包express-mysql-session
         req.session.user = results[0];
         // console.log(req.session);
         // 3 发送响应到客户端 告诉客户端可以登录了!
@@ -53,3 +55,8 @@ exports.handleSignin = (req, res) => {
         });
     })
 };
+
+exports.handleSignout = (req,res) => {
+    delete req.session.user;
+    res.redirect('/signin');//用户退出
+}
